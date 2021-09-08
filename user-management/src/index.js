@@ -3,11 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Route, Switch, BrowserRouter } from 'react-router-dom';
+import Signup from './components/Signup';
+import Login from './components/Login';
+import Home from './components/Home'
+import { Account } from './components/Account';
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Account>
+    <BrowserRouter>
+        <Switch>
+            <Route exact path = "/" component = {Login}/>
+            <Route exact path = "/signup" component = {Signup}/>
+            <Route exact path = "/home" component = {Home}/>
+        </Switch>
+    </BrowserRouter>
+    </Account>,
   document.getElementById('root')
 );
 

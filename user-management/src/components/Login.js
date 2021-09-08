@@ -1,37 +1,28 @@
-import React, {useState} from 'react'
-import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js'
-import UserPool from '../UserPool'
+import React, {useState, useContext} from 'react'
+import { AccountContext } from './Account'
+import { useHistory } from "react-router-dom";
+import Home from './Home';
+import {Link} from 'react-router-dom'
+
 
 const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const history = useHistory();
+
+    const{authenticate} = useContext(AccountContext)
 
     const onSubmit = (e) => {
         e.preventDefault();
-       
-        const user = new CognitoUser({
-            Username: email,
-            Pool:UserPool
-        });
-
-        const authDetails = new AuthenticationDetails({
-            Username: email,
-            Password: password
+        authenticate(email, password)
+        .then((data) => {
+            history.push("/Home");
+            console.log("Logged In ", data)
+        }).catch((err) => {
+            console.log("Error ", err)
         })
-
-        user.authenticateUser(authDetails, {
-            onSuccess: (data) => {
-                console.log("Success: ", data)
-            },
-            onFailure: (err) => {
-                console.log("Failure: ", err)
-            },
-            newPasswordRequired: (data) => {
-                console.log("New Password Required: ", data)
-            }
-        })
-
     }
+
 
     return(
         <div>
@@ -44,6 +35,7 @@ const Login = () => {
                 <input value = {password} onChange = {(e) => setPassword(e.target.value)}></input>
 
                 <button type="submit">Log In</button>
+                <p>Don't have an account? <Link to="/signup">Sign Up</Link> </p>
 
             </form>
         </div>
