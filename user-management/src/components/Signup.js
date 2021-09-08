@@ -10,8 +10,9 @@ const Signup = () => {
         UserPool.signUp(email, password, [], null, (err,data) => {
             if(err){
                 console.error(err)
+            }else{
+                console.log(data)
             }
-            console.log(data)
         })
     }
 
