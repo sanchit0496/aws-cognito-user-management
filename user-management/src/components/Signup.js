@@ -2,12 +2,22 @@ import React, {useState} from 'react'
 import UserPool from '../UserPool'
 import { useHistory } from 'react-router'
 import Login from './Login'
+import { CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
+
+const setCognitoUserAttribute = (attributeKey, attributeValue) => {
+    let data = {
+      Name: attributeKey,
+      Value: attributeValue
+    };
+  
+    return new CognitoUserAttribute(data);
+  };
 
 const Signup = () => {
     const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
+    const [email, setEmail] = useState("") //first
     const [phoneNumber, setPhoneNumber] = useState("")
-    const [password, setPassword] = useState("")
+    const [password, setPassword] = useState("") //second
     const [birthdate, setBirthdate] = useState("")
     const [address1, setAddress1] = useState("")
     const [address2, setAddress2] = useState("")
@@ -16,13 +26,25 @@ const Signup = () => {
     const [country, setCountry] = useState("")
     const [zipCode, setZipcode] = useState("")
 
+    const attributeList = []
+    attributeList.push(setCognitoUserAttribute('name', name));
+    attributeList.push(setCognitoUserAttribute('phone_number', phoneNumber));
+    attributeList.push(setCognitoUserAttribute('birthdate', birthdate));
+    attributeList.push(setCognitoUserAttribute('custom:address1', address1));
+    attributeList.push(setCognitoUserAttribute('custom:address2', address2));
+    attributeList.push(setCognitoUserAttribute('custom:city', city));
+    attributeList.push(setCognitoUserAttribute('custom:state', state));
+    attributeList.push(setCognitoUserAttribute('custom:country', country));
+    attributeList.push(setCognitoUserAttribute('custom:zipCode', zipCode));
+
 
     const history = useHistory();
 
     const onSubmit = (e) => {
         e.preventDefault();
-        UserPool.signUp(email, password, [], null, (err,data) => {
+        UserPool.signUp(email, password, attributeList, null, (err,data) => {
             if(err){
+                console.log(attributeList)
                 console.error(err)
             }else{
                 console.log(data)
@@ -51,7 +73,7 @@ const Signup = () => {
                 <input value = {password} onChange = {(e) => setPassword(e.target.value)}></input>
 
                 <label htmlFor = "birthdate"> Birthdate </label>
-                <input value = {birthdate} onChange = {(e) => setBirthdate(e.target.value)}></input>
+                <input type="date" value = {birthdate} onChange = {(e) => setBirthdate(e.target.value)}></input>
 
                 <label htmlFor = "address1"> Address Line 1 </label>
                 <input value = {address1} onChange = {(e) => setAddress1(e.target.value)}></input>
