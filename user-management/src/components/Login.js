@@ -3,6 +3,7 @@ import { AccountContext } from './Account'
 import { useHistory } from "react-router-dom";
 import Home from './Home';
 import {Link} from 'react-router-dom'
+import ForgotPassword from './ForgotPassword';
 
 
 const Login = () => {
@@ -35,6 +36,7 @@ const Login = () => {
                 <input value = {password} onChange = {(e) => setPassword(e.target.value)}></input>
 
                 <button type="submit">Log In</button>
+                <p>Forgot Password? </p> <Link to="/forgotpassword">Forgot Password</Link>
                 <p>Don't have an account? <Link to="/signup">Sign Up</Link> </p>
 
             </form>

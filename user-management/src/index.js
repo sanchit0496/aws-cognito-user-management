@@ -8,6 +8,7 @@ import Signup from './components/Signup';
 import Login from './components/Login';
 import Home from './components/Home'
 import { Account } from './components/Account';
+import ForgotPassword from './components/ForgotPassword';
 
 
 ReactDOM.render(
@@ -17,6 +18,7 @@ ReactDOM.render(
             <Route exact path = "/" component = {Login}/>
             <Route exact path = "/signup" component = {Signup}/>
             <Route exact path = "/home" component = {Home}/>
+            <Route exact path = "/forgotpassword" component = {ForgotPassword}/>
         </Switch>
     </BrowserRouter>
     </Account>,
